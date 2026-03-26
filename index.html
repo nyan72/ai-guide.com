@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Component Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #f9fafb; }
+        .component-card:hover { transform: translateY(-2px); transition: all 0.2s; }
+    </style>
+</head>
+<body class="text-gray-900 font-sans">
+
+    <header class="sticky top-0 z-10 bg-white border-b border-gray-200 py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-tight">Component<span class="text-blue-600">Gallery</span></h1>
+            <nav class="space-x-6 text-sm font-medium">
+                <a href="#" class="hover:text-blue-600">Components</a>
+                <a href="#" class="hover:text-blue-600">Design Systems</a>
+                <a href="#" class="text-gray-500 hover:text-blue-600">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section class="mb-16">
+            <h2 class="text-4xl font-extrabold mb-4">UI Components Reference</h2>
+            <p class="text-gray-600 max-w-2xl text-lg">
+                モダンなウェブサイト制作に欠かせない、再利用可能なUIパーツのコレクションです。
+            </p>
+        </section>
+
+        <div class="flex gap-2 mb-8 overflow-x-auto pb-2">
+            <button class="px-4 py-2 bg-blue-600 text-white rounded-full text-sm">All</button>
+            <button class="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm hover:border-blue-600">Navigation</button>
+            <button class="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm hover:border-blue-600">Forms</button>
+            <button class="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm hover:border-blue-600">Overlays</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <a href="#" class="component-card group">
+                <div class="aspect-video bg-white border border-gray-200 rounded-lg mb-4 flex items-center justify-center p-8 group-hover:border-blue-400">
+                    <button class="px-6 py-2 bg-blue-600 text-white rounded-md shadow-sm">Button Component</button>
+                </div>
+                <h3 class="font-bold text-lg">Buttons</h3>
+                <p class="text-sm text-gray-500">アクションを促すための様々なスタイル。</p>
+            </a>
+
+            <a href="#" class="component-card group">
+                <div class="aspect-video bg-white border border-gray-200 rounded-lg mb-4 flex flex-col gap-2 justify-center px-12 group-hover:border-blue-400">
+                    <div class="h-3 w-full bg-gray-100 rounded"></div>
+                    <div class="h-3 w-3/4 bg-gray-100 rounded"></div>
+                </div>
+                <h3 class="font-bold text-lg">Cards</h3>
+                <p class="text-sm text-gray-500">情報をグルーピングして表示するコンテナ。</p>
+            </a>
+
+            <a href="#" class="component-card group">
+                <div class="aspect-video bg-white border border-gray-200 rounded-lg mb-4 flex items-center justify-center group-hover:border-blue-400">
+                    <nav class="flex gap-4">
+                        <span class="w-8 h-8 bg-gray-100 rounded-full"></span>
+                        <span class="w-20 h-4 bg-gray-100 mt-2 rounded"></span>
+                    </nav>
+                </div>
+                <h3 class="font-bold text-lg">Navigation</h3>
+                <p class="text-sm text-gray-500">サイト内の移動をサポートするメニュー。</p>
+            </a>
+
+        </div>
+    </main>
+
+    <footer class="border-t border-gray-200 mt-20 py-10">
+        <div class="container mx-auto px-6 text-center text-gray-400 text-sm">
+            &copy; 2026 Component Gallery Inspired Template
+        </div>
+    </footer>
+
+</body>
+</html>
