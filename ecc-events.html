@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hooks & Plugins - Everything Claude Code</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #ffffff; color: #333; line-height: 1.6; font-family: "Helvetica Neue", Arial, sans-serif; }
+        .container { max-width: 850px; margin: 0 auto; padding: 40px 20px; }
+        
+        /* とほほ風見出し */
+        h1 { font-size: 26px; border-bottom: 2px solid #333; padding-bottom: 8px; margin-bottom: 25px; font-weight: bold; }
+        h2 { font-size: 19px; background-color: #f4f4f4; padding: 6px 12px; border-left: 6px solid #8b5cf6; margin-top: 40px; font-weight: bold; }
+        h3 { font-size: 17px; font-weight: bold; margin-top: 25px; color: #7c3aed; border-bottom: 1px dashed #ccc; display: inline-block; }
+
+        /* 簿記・フローチャート風：イベントの発生タイミング */
+        .event-flow { background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; margin: 20px 0; border-radius: 12px; }
+        .flow-step { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+        .step-tag { font-family: monospace; font-size: 12px; background: #ddd; padding: 2px 6px; border-radius: 4px; min-width: 120px; text-align: center; }
+        .step-desc { font-size: 14px; color: #4b5563; }
+
+        /* JSON設定例 (とほほ風) */
+        pre { background-color: #1e293b; color: #f8fafc; padding: 20px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 13px; margin: 15px 0; overflow-x: auto; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+        .comment { color: #94a3b8; }
+
+        /* プラグインカード */
+        .plugin-card { border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .plugin-name { font-weight: bold; color: #1e293b; }
+
+        .back-link { color: #0000ee; text-decoration: underline; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav class="mb-8">
+        <a href="index.html" class="back-link">← 目次へ戻る</a>
+    </nav>
+
+    <header>
+        <p class="text-xs font-bold text-gray-400 tracking-widest mb-2 uppercase">Automation</p>
+        <h1 class="text-3xl font-bold">イベント駆動の解説 (Hooks & Plugins)</h1>
+        <p class="text-gray-600">特定の動作をトリガーにして、検証やフォーマットを「自動発動」させる仕組み。</p>
+    </header>
+
+    <section>
+        <h2>1. Hooks：ライフサイクル・イベント</h2>
+        <p>Hooksは、ツールの実行前後やユーザーの入力時に割り込んで動作します。簿記の「仕訳のタイミング」のように、発生順序を理解することが重要です。</p>
+        
+        <div class="event-flow">
+            <div class="flow-step">
+                <span class="step-tag bg-blue-100 text-blue-700 font-bold">PreToolUse</span>
+                <span class="step-desc">ツール実行直前（バリデーション、tmuxのリマインドなど）</span>
+            </div>
+            <div class="text-center text-gray-300 py-1 leading-none text-xl">↓</div>
+            <div class="flow-step font-bold text-gray-900 ml-8 italic">🛠️ Tool Execution (Bash, Edit, etc.)</div>
+            <div class="text-center text-gray-300 py-1 leading-none text-xl">↓</div>
+            <div class="flow-step">
+                <span class="step-tag bg-green-100 text-green-700 font-bold">PostToolUse</span>
+                <span class="step-desc">実行完了直後（自動フォーマット、テスト実行、Lint確認）</span>
+            </div>
+            <div class="text-center text-gray-300 py-1 leading-none text-xl">↓</div>
+            <div class="flow-step">
+                <span class="step-tag bg-purple-100 text-purple-700 font-bold">Stop</span>
+                <span class="step-desc">Claudeの回答終了（console.logの消し忘れチェック等）</span>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>2. 実践設定例 (JSON)</h2>
+        <h3>tmuxのリマインド設定</h3>
+        <p>長時間かかるコマンド（npm install 等）を実行しようとした際、tmux環境下でなければ警告を出します。</p>
+        <pre>
+{
+  <span class="comment">// ツールがBash、かつコマンドが特定のパッケージマネージャーの場合</span>
+  "PreToolUse": [
+    {
+      "matcher": "tool == \"Bash\" && tool_input.command matches \"(npm|pnpm|yarn|pytest)\"",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "if [ -z \"$TMUX\" ]; then echo '[Hook] セッション保護のためにtmuxの使用を検討してください' >&2; fi"
+        }
+      ]
+    }
+  ]
+}</pre>
+
+        <h3>自動フォーマット (PostToolUse)</h3>
+        <p>TypeScriptファイルを編集した直後に、自動的にPrettierを走らせます。</p>
+        <pre>
+"PostToolUse": [
+  {
+    "matcher": "Edit && .ts/.tsx",
+    "hooks": ["prettier --write"]
+  }
+]</pre>
+    </section>
+
+    <section>
+        <h2>3. Plugins：ツールのパッケージ化</h2>
+        <p>プラグインは、Skills、Hooks、MCPをセットにして簡単にインストールできるようにしたものです。</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="plugin-card bg-white">
+                <div>
+                    <span class="plugin-name">hookify</span>
+                    <p class="text-xs text-gray-500">対話形式でHookを生成</p>
+                </div>
+                <code class="text-xs">Official</code>
+            </div>
+            <div class="plugin-card bg-white">
+                <div>
+                    <span class="plugin-name">typescript-lsp</span>
+                    <p class="text-xs text-gray-500">リアルタイム型チェック</p>
+                </div>
+                <code class="text-xs">Official</code>
+            </div>
+            <div class="plugin-card bg-white">
+                <div>
+                    <span class="plugin-name">mgrep</span>
+                    <p class="text-xs text-gray-500">超高速なコード/Web検索</p>
+                </div>
+                <code class="text-xs text-External">Mixedbread</code>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-6">
+            <p class="text-sm"><strong>💡 警告：</strong> プラグインを入れすぎるとコンテキストウィンドウを圧迫します。常用するもの以外は無効化しておくのが「Everything Claude Code」流の極意です。</p>
+        </div>
+    </section>
+
+    <footer class="mt-20 pt-8 border-t border-gray-100 text-sm text-gray-400 text-right">
+        Built for Automation Enthusiasts. / 2026.03.26
+    </footer>
+</div>
+
+</body>
+</html>
