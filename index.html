@@ -3,137 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claude Code 徹底解説 | ターミナルで動くAIエンジニア</title>
+    <title>Technology Docs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --primary-color: #d97757; /* Claudeのアクセントカラー */
-            --bg-color: #f9f7f2;
-            --text-color: #333;
-            --code-bg: #1e1e1e;
-        }
-
-        body {
-            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background-color: #fff;
-            border-bottom: 1px solid #ddd;
-            padding: 2rem 1rem;
-            text-align: center;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        h1 { color: var(--primary-color); margin-bottom: 0.5rem; }
-        h2 { border-left: 5px solid var(--primary-color); padding-left: 1rem; margin-top: 2rem; }
-
-        .hero {
-            text-align: center;
-            padding: 3rem 1rem;
-            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
-            border-radius: 12px;
-            margin-bottom: 2rem;
-        }
-
-        .code-block {
-            background-color: var(--code-bg);
-            color: #fff;
-            padding: 1.5rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-family: 'Courier New', Courier, monospace;
-            position: relative;
-        }
-
-        .code-block::before {
-            content: "Terminal";
-            display: block;
-            font-size: 0.8rem;
-            color: #888;
-            margin-bottom: 0.5rem;
-            border-bottom: 1px solid #444;
-        }
-
-        .step-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            margin-bottom: 1.5rem;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            font-size: 0.9rem;
-            color: #777;
-        }
+        body { background-color: #f9fafb; }
+        .card { transition: transform 0.2s, box-shadow 0.2s; }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Claude Code ガイド</h1>
-    <p>ターミナルから離れずに、AIと対話しながらコーディングする</p>
-</header>
+    <header class="py-12 px-6 text-center">
+        <h1 class="text-4xl font-bold text-gray-900 tracking-tight">Technology Library</h1>
+        <p class="mt-4 text-gray-500 text-lg">技術の基礎を学ぶためのシンプルなドキュメント集</p>
+    </header>
 
-<div class="container">
-    <section class="hero">
-        <h2>Claude Code とは？</h2>
-        <p>Anthropicが提供する、コマンドラインインターフェース（CLI）専用のAIエージェントです。コードの編集、テストの実行、git操作などをターミナル上ですべて完結させます。</p>
-    </section>
+    <main class="max-w-6xl mx-auto px-6 pb-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <a href="html-guide.html" class="card bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center text-center">
+                <span class="text-3xl mb-4">🌐</span>
+                <h2 class="text-xl font-semibold text-gray-800">HTML</h2>
+            </a>
 
-    <section>
-        <h2>クイックスタート</h2>
-        <div class="step-card">
-            <h3>1. インストール</h3>
-            <p>Node.js環境で以下のコマンドを実行します。</p>
-            <div class="code-block">
-                npm install -g @anthropic-ai/claude-code
-            </div>
+            <a href="css-guide.html" class="card bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center text-center">
+                <span class="text-3xl mb-4">🎨</span>
+                <h2 class="text-xl font-semibold text-gray-800">CSS</h2>
+            </a>
+
+            <a href="javascript-guide.html" class="card bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center text-center">
+                <span class="text-3xl mb-4">⚡</span>
+                <h2 class="text-xl font-semibold text-gray-800">JavaScript</h2>
+            </a>
+
+            <a href="http-guide.html" class="card bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center text-center">
+                <span class="text-3xl mb-4">📡</span>
+                <h2 class="text-xl font-semibold text-gray-800">HTTP</h2>
+            </a>
+
+            <a href="dom-guide.html" class="card bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center text-center">
+                <span class="text-3xl mb-4">🌳</span>
+                <h2 class="text-xl font-semibold text-gray-800">DOM</h2>
+            </a>
+
+            <a href="server-guide.html" class="card bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center text-center">
+                <span class="text-3xl mb-4">💻</span>
+                <h2 class="text-xl font-semibold text-gray-800">Server</h2>
+            </a>
+
         </div>
+    </main>
 
-        <div class="step-card">
-            <h3>2. 初期設定</h3>
-            <p>認証を行うために起動します。</p>
-            <div class="code-block">
-                claude
-            </div>
-        </div>
-
-        <div class="step-card">
-            <h3>3. 使い方</h3>
-            <p>プロジェクトのルートディレクトリで質問や指示を投げます。</p>
-            <div class="code-block">
-                # 例: バグの修正を依頼する<br>
-                > /fix index.js のバリデーションエラーを直して
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <h2>主な特徴</h2>
-        <ul>
-            <li><strong>ファイル操作:</strong> 複数のファイルをまたいだ書き換えが可能。</li>
-            <li><strong>コマンド実行:</strong> テストを自分で走らせ、エラーが出たら自己修正。</li>
-            <li><strong>Git連携:</strong> 修正内容を理解し、適切なコミットメッセージを作成。</li>
-        </ul>
-    </section>
-</div>
-
-<footer>
-    &copy; 2026 Claude Code Fan Guide. Built with Claude.
-</footer>
+    <footer class="py-10 border-t border-gray-200 text-center text-gray-400 text-sm">
+        &copy; 2024 Tech Docs. Inspired by tohoho & Component Gallery.
+    </footer>
 
 </body>
 </html>
