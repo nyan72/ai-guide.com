@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills & Commands - Everything Claude Code</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #ffffff; color: #333; line-height: 1.6; font-family: "Helvetica Neue", Arial, sans-serif; }
+        .container { max-width: 850px; margin: 0 auto; padding: 40px 20px; }
+        
+        /* とほほ風見出し */
+        h1 { font-size: 26px; border-bottom: 2px solid #333; padding-bottom: 8px; margin-bottom: 25px; font-weight: bold; }
+        h2 { font-size: 19px; background-color: #f4f4f4; padding: 6px 12px; border-left: 6px solid #1a1a1a; margin-top: 40px; font-weight: bold; }
+        h3 { font-size: 17px; font-weight: bold; margin-top: 25px; color: #2563eb; border-bottom: 1px dashed #ccc; display: inline-block; }
+
+        /* 簿記・対比表スタイル (Skills vs Commands) */
+        .comparison-box { background-color: #fff; border: 1px solid #ddd; margin: 20px 0; overflow: hidden; border-radius: 8px; }
+        .comparison-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        .comparison-table th { background-color: #f9fafb; border-bottom: 1px solid #ddd; padding: 12px; font-size: 14px; color: #666; text-align: center; }
+        .comparison-table td { padding: 20px; vertical-align: top; font-size: 14px; border-right: 1px solid #ddd; }
+        .comparison-table td:last-child { border-right: none; }
+
+        /* コード・設定例 (とほほ風) */
+        pre { background-color: #f6f8fa; border: 1px solid #e1e4e8; padding: 16px; border-radius: 6px; font-family: monospace; font-size: 13px; margin: 15px 0; overflow-x: auto; }
+        code { color: #d73a49; font-family: monospace; }
+
+        /* 重要アドバイス */
+        .advice-box { border: 1px solid #ff9900; background-color: #fff9f0; padding: 15px; margin: 20px 0; border-radius: 4px; }
+        .advice-title { color: #ff9900; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
+
+        .back-link { color: #0000ee; text-decoration: underline; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav class="mb-8">
+        <a href="index.html" class="back-link">← 目次へ戻る</a>
+    </nav>
+
+    <header>
+        <p class="text-xs font-bold text-gray-400 tracking-widest mb-2 uppercase">Core Features</p>
+        <h1 class="text-3xl font-bold">単体機能の解説 (Skills & Commands)</h1>
+        <p class="text-gray-600">プロンプトを「資産化」し、特定のワークフローを短縮コマンドとして実行する仕組み。</p>
+    </header>
+
+    <section>
+        <h2>1. Skills と Commands の違い</h2>
+        <p>両者は似ていますが、保存場所と実行のされ方が異なります。簿記のように役割を整理すると以下の通りです。</p>
+        
+        <div class="comparison-box shadow-sm">
+            <table class="comparison-table">
+                <tr>
+                    <th>名称</th>
+                    <th>Skills (スキル)</th>
+                    <th>Commands (コマンド)</th>
+                </tr>
+                <tr>
+                    <td class="bg-gray-50 font-bold text-center">役割</td>
+                    <td>広範なワークフローの定義<br><span class="text-xs text-gray-500">(ルール・制約に近い)</span></td>
+                    <td>即時実行されるプロンプト<br><span class="text-xs text-gray-500">(マクロに近い)</span></td>
+                </tr>
+                <tr>
+                    <td class="bg-gray-50 font-bold text-center">保存場所</td>
+                    <td><code>~/.claude/skills/</code></td>
+                    <td><code>~/.claude/commands/</code></td>
+                </tr>
+                <tr>
+                    <td class="bg-gray-50 font-bold text-center">実行方法</td>
+                    <td>プロンプト内で自然に呼び出される</td>
+                    <td><code>/tdd</code> のようにスラッシュで実行</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <section>
+        <h2>2. 実践的な設定例</h2>
+        
+        <h3>例：コードマップの更新 (Codemap Updater)</h3>
+        <p>探索によるコンテキスト消費を抑えるため、チェックポイントごとにコードマップを更新するスキルです。</p>
+        <pre>
+# ~/.claude/skills/codemap-updater.md
+このスキルは、コードベースの構造を要約した
+`codemap.md` を最新状態に保つためのものです。
+ファイル構成に変更があった際に、自動的にツリー構造を更新します。</pre>
+
+        <h3>例：TDDワークフローのコマンド化</h3>
+        <p>テストを先に書き、その後に実装を行う一連の流れを <code>/tdd</code> で呼び出せるようにします。</p>
+        <pre>
+# ~/.claude/commands/tdd.md
+1. 指定された機能のテストファイルを `tests/` に作成せよ
+2. テストを実行し、失敗を確認せよ
+3. テストをパスする最小限のコードを実装せよ</pre>
+
+        <div class="advice-box">
+            <div class="advice-title">💡 プロのTips: コマンドの連結</div>
+            <p class="text-sm">
+                これらのスキルとコマンドは、単一のプロンプト内で「連結」して実行可能です。<br>
+                例：<code>/refactor-clean</code> を実行した直後に <code>/test-coverage</code> を回すといった自動化が可能です。
+            </p>
+        </div>
+    </section>
+
+    <section>
+        <h2>3. ファイル構造の可視化</h2>
+        <p>これらの機能は、プロジェクト単位やユーザー単位で以下のように管理されます。</p>
+        <pre>
+~/.claude/
+├── skills/
+│   ├── coding-standards.md   (コーディング規約)
+│   └── security-review.md    (セキュリティチェックリスト)
+└── commands/
+    ├── tdd-workflow/         (フォルダによる構造化も可能)
+    └── pmx-guidelines.md     (プロジェクト特有のパターン)</pre>
+    </section>
+
+    <section>
+        <h2>まとめ：なぜこれが必要か？</h2>
+        <ul class="list-disc ml-6 space-y-2 mt-4">
+            <li><strong>コンテキストの節約:</strong> 長い指示を毎回打つ必要がなくなり、トークンを節約できる。</li>
+            <li><strong>一貫性の確保:</strong> チームや個人で共通の「解き方」を固定できる。</li>
+            <li><strong>自動化の基盤:</strong> 後述する「Hooks」と組み合わせることで、特定の動作をトリガーにこれらのスキルを自動発動できる。</li>
+        </ul>
+    </section>
+
+    <footer class="mt-20 pt-8 border-t border-gray-100 text-sm text-gray-400 text-center italic">
+        "I take 3 minutes to prompt a 20-minute task." — Mastering Skills & Commands.
+    </footer>
+</div>
+
+</body>
+</html>
