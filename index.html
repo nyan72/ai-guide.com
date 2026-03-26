@@ -3,59 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Technology Docs</title>
+    <title>AI Model Knowledge Base</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #f9fafb; }
-        .card { transition: transform 0.2s, box-shadow 0.2s; }
-        .card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        body { background-color: #fcfcfc; color: #1a1a1a; }
+        .ai-card { transition: all 0.3s ease; }
+        .ai-card:hover { border-color: #e5e7eb; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        .list-item { transition: color 0.2s; position: relative; padding-left: 1.25rem; }
+        .list-item::before { content: "・"; position: absolute; left: 0; color: #d1d5db; }
+        .list-item:hover { color: #2563eb; text-decoration: underline; }
     </style>
 </head>
-<body>
+<body class="antialiased">
 
-    <header class="py-12 px-6 text-center">
-        <h1 class="text-4xl font-bold text-gray-900 tracking-tight">Technology Library</h1>
-        <p class="mt-4 text-gray-500 text-lg">技術の基礎を学ぶためのシンプルなドキュメント集</p>
+    <header class="max-w-5xl mx-auto pt-20 pb-12 px-6">
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900">AI Knowledge Docs</h1>
+        <p class="mt-2 text-gray-500 font-medium">各AIモデルの仕様と活用コマンドのまとめ</p>
     </header>
 
-    <main class="max-w-6xl mx-auto px-6 pb-20">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            
-            <a href="html-guide.html" class="card bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center text-center">
-                <span class="text-3xl mb-4">🌐</span>
-                <h2 class="text-xl font-semibold text-gray-800">HTML</h2>
-            </a>
+    <main class="max-w-5xl mx-auto px-6 pb-24">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-            <a href="css-guide.html" class="card bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center text-center">
-                <span class="text-3xl mb-4">🎨</span>
-                <h2 class="text-xl font-semibold text-gray-800">CSS</h2>
-            </a>
+            <section class="ai-card bg-white border border-gray-100 rounded-2xl p-8 shadow-sm">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-2 h-6 bg-orange-400 rounded-full"></div>
+                    <h2 class="text-xl font-bold text-gray-800">Claude</h2>
+                </div>
+                <ul class="space-y-4 text-gray-600">
+                    <li><a href="claude-context.html" class="list-item block">Context & Memory Management</a></li>
+                    <li><a href="claude-skills.html" class="list-item block">Skills & Commands</a></li>
+                    <li><a href="claude-learning.html" class="list-item block">Continuous / Learning</a></li>
+                </ul>
+            </section>
 
-            <a href="javascript-guide.html" class="card bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center text-center">
-                <span class="text-3xl mb-4">⚡</span>
-                <h2 class="text-xl font-semibold text-gray-800">JavaScript</h2>
-            </a>
+            <section class="ai-card bg-white border border-gray-100 rounded-2xl p-8 shadow-sm">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-2 h-6 bg-blue-500 rounded-full"></div>
+                    <h2 class="text-xl font-bold text-gray-800">Gemini</h2>
+                </div>
+                <ul class="space-y-4 text-gray-600">
+                    <li><a href="gemini-hoge1.html" class="list-item block">hogehoge</a></li>
+                    <li><a href="gemini-hoge2.html" class="list-item block">hogehoge</a></li>
+                </ul>
+            </section>
 
-            <a href="http-guide.html" class="card bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center text-center">
-                <span class="text-3xl mb-4">📡</span>
-                <h2 class="text-xl font-semibold text-gray-800">HTTP</h2>
-            </a>
-
-            <a href="dom-guide.html" class="card bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center text-center">
-                <span class="text-3xl mb-4">🌳</span>
-                <h2 class="text-xl font-semibold text-gray-800">DOM</h2>
-            </a>
-
-            <a href="server-guide.html" class="card bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center text-center">
-                <span class="text-3xl mb-4">💻</span>
-                <h2 class="text-xl font-semibold text-gray-800">Server</h2>
-            </a>
+            <section class="ai-card bg-white border border-gray-100 rounded-2xl p-8 shadow-sm">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-2 h-6 bg-teal-500 rounded-full"></div>
+                    <h2 class="text-xl font-bold text-gray-800">NotebookLM</h2>
+                </div>
+                <ul class="space-y-4 text-gray-600">
+                    <li><a href="nlm-hoge1.html" class="list-item block">hogehoge</a></li>
+                    <li><a href="nlm-hoge2.html" class="list-item block">hogehoge</a></li>
+                </ul>
+            </section>
 
         </div>
     </main>
 
-    <footer class="py-10 border-t border-gray-200 text-center text-gray-400 text-sm">
-        &copy; 2024 Tech Docs. Inspired by tohoho & Component Gallery.
+    <footer class="max-w-5xl mx-auto px-6 py-12 border-t border-gray-100 text-gray-400 text-sm">
+        Update: 2024 / Built with Simplicity
     </footer>
 
 </body>
