@@ -6,89 +6,121 @@
     <title>Best Practice for Agents - AI Library</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #ffffff; color: #24292e; line-height: 1.7; }
-        .content-max { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
-        h1 { border-bottom: 2px solid #eaecef; padding-bottom: 0.3em; }
-        h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; margin-top: 2em; }
-        code { background-color: #f6f8fa; padding: 0.2em 0.4em; border-radius: 3px; font-family: monospace; }
-        pre { background-color: #f6f8fa; padding: 16px; border-radius: 6px; overflow: auto; margin: 1.5em 0; border: 1px solid #e1e4e8; }
-        .note { background-color: #fffbdd; border-left: 4px solid #d4a017; padding: 16px; margin: 1.5em 0; }
-        .back-link { color: #0366d6; text-decoration: none; }
-        .back-link:hover { text-decoration: underline; }
+        body { background-color: #ffffff; color: #333; line-height: 1.6; font-family: "Helvetica Neue", Arial, sans-serif; }
+        .container { max-width: 850px; margin: 0 auto; padding: 40px 20px; }
+        
+        /* とほほ風見出し */
+        h1 { font-size: 26px; border-bottom: 2px solid #333; padding-bottom: 8px; margin-bottom: 25px; font-weight: bold; }
+        h2 { font-size: 19px; background-color: #f4f4f4; padding: 6px 12px; border-left: 6px solid #4b5563; margin-top: 40px; font-weight: bold; }
+        h3 { font-size: 17px; font-weight: bold; margin-top: 25px; color: #1e40af; border-bottom: 1px dashed #ccc; display: inline-block; }
+
+        /* 簿記テキスト風：対比ボックス（Orchestrator vs Sub-Agent） */
+        .comparison-box { background-color: #fff; border: 1px solid #ddd; margin: 20px 0; overflow: hidden; }
+        .comparison-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        .comparison-table th { background-color: #f9fafb; border-bottom: 1px solid #ddd; padding: 8px; font-size: 13px; color: #666; }
+        .comparison-table td { padding: 15px; vertical-align: top; font-size: 14px; }
+        .border-r { border-right: 1px solid #ddd; }
+
+        /* 重要ポイント（とほほ風） */
+        .point-box { border: 1px solid #c00; background-color: #fff5f5; padding: 15px; margin: 20px 0; border-radius: 4px; }
+        .point-title { color: #c00; font-weight: bold; margin-bottom: 5px; display: flex; items-center; gap: 5px; }
+
+        /* 箇条書き */
+        .list-dot { list-style: none; padding-left: 0; }
+        .list-dot li { position: relative; padding-left: 1.5rem; margin-bottom: 8px; }
+        .list-dot li::before { content: "・"; position: absolute; left: 0; font-weight: bold; }
+
+        /* リンク */
+        .back-link { color: #0000ee; text-decoration: underline; font-size: 14px; }
+        code { background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px; font-family: monospace; font-size: 0.9em; }
     </style>
 </head>
 <body>
 
-<div class="content-max">
+<div class="container">
     <nav class="mb-8">
-        <a href="index.html" class="back-link">← TOPへ戻る</a>
+        <a href="index.html" class="back-link">← 目次へ戻る</a>
     </nav>
 
     <header>
-        <p class="text-sm text-gray-500 mb-2">Claude / Advanced Patterns</p>
-        <h1 class="text-3xl font-bold">Best Practice for Agents & SubAgents</h1>
+        <h1 class="text-3xl">Best Practice for Agents & SubAgents</h1>
+        <p class="text-gray-600">エージェントのオーケストレーション（運用・実行層）における重要指針</p>
     </header>
 
     <section>
-        <p class="mt-6 text-lg text-gray-600">
-            エージェント（Orchestrator）とサブエージェントを連携させる際の「実行とオーケストレーション」に焦点を当てたガイドです。
-        </p>
-    </section>
-
-    <section>
-        <h2>1. サブエージェントの「文脈欠如」問題</h2>
-        <p>サブエージェントは情報を要約して返してくれますが、<strong>「なぜその作業が必要か」という背景（Semantic Context）</strong>を知りません。</p>
-        <div class="note">
-            <strong>上司と部下の例え：</strong><br>
-            部下に会議の要約を頼んでも、上司が本当に知りたいポイントが要約に含まれているとは限りません。上司には「独自の背景知識」があるからです。
-        </div>
-    </section>
-
-    <section>
-        <h2>2. 反復リトリーバル（Iterative Retrieval）</h2>
-        <p>不十分な要約を防ぐため、オーケストレーターに以下の役割を持たせます。</p>
-        <pre>
-1. 依頼：クエリだけでなく「最終目的（Objective）」も伝える
-2. 評価：サブエージェントの回答が十分かチェックする
-3. 深掘り：不足があれば追加質問し、再取得させる（最大3回まで）</pre>
-        <p>これにより、サブエージェントはソースに戻って必要な情報を補完できます。</p>
-    </section>
-
-    <section>
-        <h2>3. 逐次フェーズによる運用（Sequential Phases）</h2>
-        <p>作業をフェーズに分け、各エージェントの入出力を明確にします。</p>
-        <ul class="list-disc ml-6 space-y-2 mt-4">
-            <li><strong>Phase 1: RESEARCH</strong>（調査・パターン特定）</li>
-            <li><strong>Phase 2: PLAN</strong>（調査結果を読み、計画策定）</li>
-            <li><strong>Phase 3: IMPLEMENT</strong>（計画を読み、テスト駆動で実装）</li>
-            <li><strong>Phase 4: REVIEW</strong>（全変更をレビュー）</li>
-        </ul>
-        <div class="note">
-            <strong>鉄則：</strong> フェーズを飛ばさないこと。中間出力はメモリ内だけでなく「ファイル」として保存し、次のエージェントに渡します。
-        </div>
-    </section>
-
-    <section>
-        <h2>4. エージェント習得のティアリスト</h2>
-        <p>まずは難易度が低く効果が高い「Tier 1」からマスターしましょう。</p>
+        <h2>1. コンテキストの非対称性問題</h2>
+        <p>サブエージェントは「要約」を返しますが、依頼側（Orchestrator）が持つ<strong>「真の目的」</strong>を理解していないため、重要な詳細が抜け落ちる傾向があります。</p>
         
-        <h3 class="font-bold mt-4 text-orange-600">【Tier 1】まずはここから（高コスパ）</h3>
-        <ul class="list-disc ml-6 mb-4">
-            <li><strong>Subagents:</strong> コンテキストの腐敗を防ぎ、タスクを専門化させる。</li>
-            <li><strong>Metaprompting:</strong> プロンプト作成に時間をかけ、安定性を高める。</li>
-            <li><strong>事前ヒアリング:</strong> 実行前にユーザーへ不明点を確認する。</li>
+        <div class="comparison-box">
+            <table class="comparison-table">
+                <tr>
+                    <th class="border-r">親エージェント (Orchestrator)</th>
+                    <th>サブエージェント (Sub-Agent)</th>
+                </tr>
+                <tr>
+                    <td class="border-r">
+                        <strong>【全体文脈を保持】</strong><br>
+                        なぜこの調査が必要か、最終的に何を作りたいかの「背景」を知っている。
+                    </td>
+                    <td>
+                        <strong>【断片的知識のみ】</strong><br>
+                        依頼された「クエリ」のみを処理する。背景を知らないため、要約の取捨選択を誤る。
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <section>
+        <h2>2. 反復リトリーバル・パターン</h2>
+        <p>この問題を解決するために、一度の回答で満足せず、以下のサイクルを回します（最大3回）。</p>
+        
+        <div class="bg-gray-50 border border-gray-200 p-6 rounded-lg my-6 font-mono text-sm leading-relaxed">
+            1. 依頼：[クエリ] ＋ [全体目標(Objective)] をセットで投げる<br>
+            2. 回答：サブエージェントが要約を返す<br>
+            3. 評価：親が「十分か？」を判定<br>
+            4. 追及：不足があれば「追加質問」を投げてソースを再確認させる
+        </div>
+    </section>
+
+    <section>
+        <h2>3. 逐次フェーズ (Sequential Phases)</h2>
+        <p>複雑なタスクは以下の「フェーズ」に分割し、各工程の出力を次の入力に繋げます。</p>
+        
+        <ul class="list-dot mt-4">
+            <li><strong>Phase 1: RESEARCH</strong> - パターンの特定と <code>research-summary.md</code> の作成</li>
+            <li><strong>Phase 2: PLAN</strong> - 調査結果を読み、<code>plan.md</code>（実装計画）を作成</li>
+            <li><strong>Phase 3: IMPLEMENT</strong> - 計画に基づきテスト駆動で実装</li>
+            <li><strong>Phase 4: REVIEW</strong> - 全変更内容のコードレビュー</li>
         </ul>
 
-        <h3 class="font-bold mt-4 text-red-600">【Tier 2】上級者向け（難易度高）</h3>
-        <ul class="list-disc ml-6">
-            <li><strong>長時間稼働エージェント:</strong> 試行錯誤のサイクルが長く調整が困難。</li>
-            <li><strong>並列マルチエージェント:</strong> タスク分割と統合の難易度が高い。</li>
-            <li><strong>コンピュータ操作:</strong> まだ発展途上のパラダイム。</li>
+        <div class="point-box">
+            <div class="point-title">⚠️ 鉄則：フェーズを飛ばさない</div>
+            <p class="text-sm">各フェーズには独自の価値があります。中間出力は必ず「ファイル」として保存し、エージェント間で <code>/clear</code> を活用してコンテキストを新鮮に保ってください。</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>4. エージェント習得ティアリスト</h2>
+        <p>難易度と効果に基づいた優先順位です。</p>
+
+        <h3>Tier 1：即戦力・基本 (Direct Buffs)</h3>
+        <ul class="list-dot mt-2">
+            <li><strong>Subagents:</strong> コンテキスト腐敗の防止。マルチエージェントより低複雑。</li>
+            <li><strong>Metaprompting:</strong> プロンプトの安定性と前提条件の確認。</li>
+            <li><strong>User Check:</strong> 実行前にユーザーへ詳細をヒアリングする。</li>
+        </ul>
+
+        <h3>Tier 2：上級・高難易度 (High Skill Floor)</h3>
+        <ul class="list-dot mt-2">
+            <li><strong>Long-running agents:</strong> 長時間タスクの調整とトレードオフの理解が必要。</li>
+            <li><strong>Parallel multi-agent:</strong> タスクの切り分けとマージが非常に困難。</li>
+            <li><strong>Computer use:</strong> 未成熟な技術であり、制御の難易度が高い。</li>
         </ul>
     </section>
 
-    <footer class="mt-20 pt-8 border-t border-gray-100 text-sm text-gray-400">
-        Last updated: 2026/03/26
+    <footer class="mt-20 pt-8 border-t border-gray-100 text-sm text-gray-400 text-center">
+        &copy; 2026 AI Knowledge Archive - Simple & Insightful.
     </footer>
 </div>
 
