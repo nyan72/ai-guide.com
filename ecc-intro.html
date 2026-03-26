@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is everything-claudecode? - AI Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #ffffff; color: #333; line-height: 1.6; font-family: "Helvetica Neue", Arial, sans-serif; }
+        .container { max-width: 850px; margin: 0 auto; padding: 40px 20px; }
+        
+        /* とほほ風見出し */
+        h1 { font-size: 26px; border-bottom: 2px solid #333; padding-bottom: 8px; margin-bottom: 25px; font-weight: bold; }
+        h2 { font-size: 19px; background-color: #f4f4f4; padding: 6px 12px; border-left: 6px solid #000; margin-top: 40px; font-weight: bold; }
+        h3 { font-size: 17px; font-weight: bold; margin-top: 25px; color: #444; border-bottom: 1px dashed #ccc; display: inline-block; }
+
+        /* 簿記・概論ボックス：システム構成図 */
+        .summary-box { border: 1px solid #333; padding: 20px; margin: 20px 0; background-color: #fafafa; position: relative; }
+        .summary-title { position: absolute; top: -12px; left: 15px; background: #fff; padding: 0 10px; font-weight: bold; font-size: 14px; border: 1px solid #333; }
+
+        /* 重要ポイントの強調 */
+        .highlight-text { border-bottom: 2px solid #ffd700; font-weight: bold; }
+
+        /* 引用風（affaanmustafa氏の言葉） */
+        .quote { font-style: italic; border-left: 4px solid #ddd; padding-left: 15px; margin: 20px 0; color: #555; }
+
+        .back-link { color: #0000ee; text-decoration: underline; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav class="mb-8">
+        <a href="index.html" class="back-link">← 目次へ戻る</a>
+    </nav>
+
+    <header>
+        <p class="text-xs font-bold text-gray-400 tracking-widest mb-2 uppercase">Introduction</p>
+        <h1 class="text-3xl font-bold">everything-claudecodeとは</h1>
+        <p class="text-gray-600">
+            エンジニアの @affaanmustafa 氏が提唱する、Claude Codeを単なるチャットUIから「自律型開発OS」へと進化させるための究極のセットアップ指針です。
+        </p>
+    </header>
+
+    <section>
+        <h2>1. 概要</h2>
+        <p>「everything-claudecode」は、Claude Codeの実験的な導入初期（2025年2月）から10ヶ月以上にわたり、ハッカソンでの優勝や実務でのハードな使用を経て構築された、<span class="highlight-text">「AIとの共生開発」におけるベストプラクティスの集大成</span>です。</p>
+        
+        <div class="quote">
+            "I take 3 minutes to prompt a 20-minute task."<br>
+            （20分の作業を3分間のプロンプトで終わらせる）
+        </div>
+        <p>という哲学をベースに、いかに人間の介入を減らし、AIに自律的な思考と実行をさせるかに焦点が当てられています。</p>
+    </section>
+
+    <section>
+        <h2>2. システムの全体構造</h2>
+        <p>このガイドは、単一のテクニックではなく、以下の4つの要素が組み合わさった「エコシステム」として機能します。</p>
+
+        <div class="summary-box shadow-sm mt-8">
+            <div class="summary-title">Claude Code エコシステム図解</div>
+            <ul class="list-none space-y-4 text-sm mt-2">
+                <li>
+                    <strong>① 基礎層 (Skills & Commands)</strong><br>
+                    <span class="text-gray-500">→ 特定のワークフローを短縮記号化し、プロンプトを「資産」として蓄積する。</span>
+                </li>
+                <li>
+                    <strong>② 実行層 (Hooks & Plugins)</strong><br>
+                    <span class="text-gray-500">→ 人間が指示しなくても、イベント（保存、実行）をトリガーにAIが勝手に検証・修正する。</span>
+                </li>
+                <li>
+                    <strong>③ 運用層 (Subagents)</strong><br>
+                    <span class="text-gray-500">→ 「設計担当」「実装担当」「レビュー担当」とAIを役割分担させ、並列・自律実行させる。</span>
+                </li>
+                <li>
+                    <strong>④ 基盤層 (MCP & Resources)</strong><br>
+                    <span class="text-gray-500">→ 外部ツールとの接続と、最も重要な「コンテキスト（知能）」の最適化管理。</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>3. なぜ「everything」なのか？</h2>
+        <p>従来の「プロンプトエンジニアリング」は、1対1の対話に終始していました。しかし、everything-claudecodeが目指すのは、以下の3点の統合です。</p>
+        <ul class="list-disc ml-6 space-y-2 mt-4 text-sm">
+            <li><strong>自動化:</strong> 面倒な定型作業（テスト、リファクタリング、ドキュメント更新）を自動化。</li>
+            <li><strong>一貫性:</strong> <code>.rules</code> フォルダによる厳格な規約管理で、AIの出力品質を一定に保つ。</li>
+            <li><strong>スケーラビリティ:</strong> 複雑な大規模開発でも、サブエージェントを活用することでコンテキストを壊さずに継続開発が可能。</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>4. 学習のステップ</h2>
+        <p>このガイドは、以下の順序で読み進めることを推奨します。</p>
+        <ol class="list-decimal ml-6 space-y-2 mt-4 text-sm font-bold">
+            <li><a href="ecc-basics.html" class="text-blue-600 underline">単体機能（Skills/Commands）</a>：まずはプロンプトを武器化する。</li>
+            <li><a href="ecc-events.html" class="text-blue-600 underline">イベント駆動（Hooks）</a>：AIを勝手に働かせる仕組みを作る。</li>
+            <li><a href="ecc-resources.html" class="text-blue-600 underline">リソース管理（MCP/Subagents）</a>：複雑なプロジェクトを組織的に管理する。</li>
+        </ol>
+    </section>
+
+    <footer class="mt-20 pt-8 border-t border-gray-100 text-sm text-gray-400 text-center">
+        "Don't overcomplicate - treat configuration like fine-tuning, not architecture."<br>
+        2026.03.26 Update
+    </footer>
+</div>
+
+</body>
+</html>ecc-intro.html)
