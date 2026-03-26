@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Management - Everything Claude Code</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #ffffff; color: #333; line-height: 1.6; font-family: "Helvetica Neue", Arial, sans-serif; }
+        .container { max-width: 850px; margin: 0 auto; padding: 40px 20px; }
+        
+        /* とほほ風見出し */
+        h1 { font-size: 26px; border-bottom: 2px solid #333; padding-bottom: 8px; margin-bottom: 25px; font-weight: bold; }
+        h2 { font-size: 19px; background-color: #f4f4f4; padding: 6px 12px; border-left: 6px solid #10b981; margin-top: 40px; font-weight: bold; }
+        h3 { font-size: 17px; font-weight: bold; margin-top: 25px; color: #059669; border-bottom: 1px dashed #ccc; display: inline-block; }
+
+        /* 簿記・バランスシート風：コンテキスト管理 */
+        .bs-box { background-color: #fff; border: 2px solid #10b981; margin: 20px 0; border-radius: 12px; overflow: hidden; }
+        .bs-table { width: 100%; border-collapse: collapse; }
+        .bs-table th { background-color: #ecfdf5; border-bottom: 1px solid #10b981; padding: 10px; font-size: 14px; color: #065f46; }
+        .bs-table td { padding: 20px; vertical-align: top; width: 50%; }
+
+        /* 重要：数値・ルールの強調 */
+        .stat-badge { background: #10b981; color: white; padding: 2px 10px; border-radius: 20px; font-weight: bold; font-family: monospace; }
+        .rule-card { border: 1px solid #ddd; padding: 15px; border-radius: 8px; margin-top: 15px; background: #fafafa; }
+
+        /* サブエージェントのリスト */
+        .agent-list { font-family: monospace; background: #f1f5f9; padding: 15px; border-radius: 8px; font-size: 13px; border: 1px solid #cbd5e1; }
+
+        .back-link { color: #0000ee; text-decoration: underline; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav class="mb-8">
+        <a href="index.html" class="back-link">← 目次へ戻る</a>
+    </nav>
+
+    <header>
+        <p class="text-xs font-bold text-gray-400 tracking-widest mb-2 uppercase">Governance & Optimization</p>
+        <h1 class="text-3xl font-bold">リソース管理の法則 (MCP, Context, Subagents)</h1>
+        <p class="text-gray-600">「賢い」AIを維持するためのコンテキスト節約術と権限委譲の戦略。</p>
+    </header>
+
+    <section>
+        <h2>1. コンテキスト・バランスシート</h2>
+        <p>Claudeの「思考力」は残りのコンテキスト量に比例します。ツールやMCPを増やすことは、固定費（負債）を増やすことと同じです。</p>
+        
+        <div class="bs-box">
+            <table class="bs-table">
+                <tr>
+                    <th class="border-r border-green-200">資産 (Context Window)</th>
+                    <th>コスト (Active Resources)</th>
+                </tr>
+                <tr>
+                    <td class="border-r border-green-100">
+                        <p class="text-sm font-bold mb-2 text-green-700">利用可能な「知能」</p>
+                        <ul class="text-xs space-y-2 list-disc ml-4">
+                            <li>200k トークンの最大容量</li>
+                            <li>圧縮後の有効領域 <span class="stat-badge">70k~100k</span></li>
+                            <li>空きが多いほど推論が正確になる</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <p class="text-sm font-bold mb-2 text-red-700">常時消費される「リソース」</p>
+                        <ul class="text-xs space-y-2 list-disc ml-4">
+                            <li>有効なMCPの数（1つにつき数百〜数千）</li>
+                            <li>ロードされたPluginの数</li>
+                            <li>チャット履歴（累積負債）</li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="rule-card">
+            <p class="font-bold text-sm text-gray-800">✅ 鉄則：リソースの「断捨離」</p>
+            <p class="text-xs mt-2">MCPは30個インストールしていても良いが、同時に有効化するのは <span class="font-bold text-red-600">10個以下</span>、アクティブなツール数は <span class="font-bold text-red-600">80個以下</span> に抑えてください。それ以上は知能の著しい低下を招きます。</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>2. MCP (Model Context Protocol) の運用</h2>
+        <p>MCPは外部データへの「窓口」です。必要な時だけ開き、不要な時は閉じるのがプロの運用です。</p>
+        <h3 class="mt-4">推奨設定例 (~/.claude.json)</h3>
+        <p class="text-xs text-gray-500 mb-2">プロジェクトごとに使用しないサーバーを <code>disabledMcpServers</code> に登録します。</p>
+        <div class="agent-list">
+"disabledMcpServers": [<br>
+&nbsp;&nbsp;"playwright", (E2Eテスト時以外は不要)<br>
+&nbsp;&nbsp;"cloudflare-docs", (ドキュメント参照時以外不要)<br>
+&nbsp;&nbsp;"ableton-mcp" (音楽制作時以外不要)<br>
+]
+        </div>
+    </section>
+
+    <section>
+        <h2>3. サブエージェントによる「権限委譲」</h2>
+        <p>メインエージェント（Orchestrator）が全ての作業を行うと、コンテキストがすぐに溢れます。特定の専門作業はサブエージェントに「外注」しましょう。</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="p-4 border border-gray-200 rounded bg-white">
+                <p class="font-bold text-sm text-blue-600">📝 Planner</p>
+                <p class="text-xs text-gray-500">機能の分解と計画策定。実装は行わない。</p>
+            </div>
+            <div class="p-4 border border-gray-200 rounded bg-white">
+                <p class="font-bold text-sm text-blue-600">🏗️ Architect</p>
+                <p class="text-xs text-gray-500">システム設計と技術選定の意思決定。</p>
+            </div>
+            <div class="p-4 border border-gray-200 rounded bg-white">
+                <p class="font-bold text-sm text-blue-600">🧪 TDD-Guide</p>
+                <p class="text-xs text-gray-500">テスト作成と実装のループを担当。</p>
+            </div>
+            <div class="p-4 border border-gray-200 rounded bg-white">
+                <p class="font-bold text-sm text-blue-600">🔍 Code-Reviewer</p>
+                <p class="text-xs text-gray-500">セキュリティと品質の最終チェック。</p>
+            </div>
+        </div>
+        
+        <div class="advice-box bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-6">
+            <p class="text-sm font-bold">💡 委譲の極意：</p>
+            <p class="text-xs mt-1">サブエージェントには「必要なツールだけ」を許可してください。権限を絞ることで、彼らは迷うことなく高速に作業を完遂できます。</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>まとめ：持続可能なAI開発のために</h2>
+        <ul class="list-disc ml-6 space-y-2 mt-4 text-sm">
+            <li><strong>/compact:</strong> コンテキストが重くなったら手動で圧縮をトリガーする。</li>
+            <li><strong>/fork:</strong> 脈絡の違う作業を始める時は会話をフォークし、負債を引き継がない。</li>
+            <li><strong>Tier 1優先:</strong> 高度なマルチエージェント（Tier 2）に挑む前に、まずは基本のサブエージェント運用（Tier 1）を極める。</li>
+        </ul>
+    </section>
+
+    <footer class="mt-20 pt-8 border-t border-gray-100 text-sm text-gray-400 text-center">
+        Context is precious. Manage it like capital. / 2026.03.26
+    </footer>
+</div>
+
+</body>
+</html>
